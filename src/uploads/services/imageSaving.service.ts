@@ -1,0 +1,44 @@
+import { Injectable } from "@nestjs/common";
+import * as FileType from 'file-type';
+import * as fs from 'fs';
+import * as path from 'path';
+import * as util from 'util';
+import * as UUID from 'uuid';
+
+const writeFileAsync = util.promisify(fs.writeFile);
+const mkdirAsync = util.promisify(fs.mkdir);
+
+@Injectable()
+export class ImageSavingService {
+    async saveProfilePhoto(buffer: Buffer, userId: string): Promise<string> {
+        // Obtener la extensión del buffer de la imagen
+        const imageType = await FileType.fromBuffer(buffer);
+        const fileExtension = imageType ? `.${imageType.ext}` : '.jpg';
+
+        // Construir el nombre de archivo único con la extensión
+        const uniqueFileName = `${UUID.v4()}-${userId}-profile${fileExtension}`;
+        const filePath = path.join('uploads', 'profile-photos', uniqueFileName);
+
+        // Crear el directorio si no existe
+        await this.createDirectory(path.dirname(filePath));
+
+        try {
+            // Guardar el archivo en disco
+            await writeFileAsync(filePath, buffer);
+            return filePath;
+        } catch (error) {
+            // Manejar el error, podrías lanzar una excepción personalizada o devolver un código de error específico
+            console.error('Error al guardar la imagen:', error);
+            throw new Error('Error al guardar la imagen');
+        }
+    }
+
+    private async createDirectory(directoryPath: string): Promise<void> {
+        try {
+            await mkdirAsync(directoryPath, { recursive: true });
+        } catch (error) {
+            console.error('Error al crear el directorio:', error);
+            throw new Error('Error al crear el directorio');
+        }
+    }
+}

@@ -1,13 +1,21 @@
-import { NestFactory } from '@nestjs/core';
-import { AppModule } from './app.module';
-import { ValidationPipe } from '@nestjs/common/pipes';
 import { ValidationError } from '@nestjs/class-validator';
-import { HttpStatus } from '@nestjs/common';
+import { ClassSerializerInterceptor, HttpStatus } from '@nestjs/common';
+import { ValidationPipe } from '@nestjs/common/pipes';
+import { NestFactory, Reflector } from '@nestjs/core';
 import * as morgan from 'morgan';
+import * as multer from 'multer';
+import { AppModule } from './app.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  // excluir propiedades de enpoint
+  const reflector = app.get(Reflector);
+  const storage = multer.memoryStorage();
+  const upload = multer({ storage });
 
+  app.useGlobalInterceptors(new ClassSerializerInterceptor(reflector));
+  // -- end
+  app.enableCors();
   app.setGlobalPrefix('api/v1');
   app.use(morgan('dev'));
   app.enableCors({

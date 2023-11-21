@@ -1,0 +1,1 @@
+export const jwtConstants = { secret: "aca va la palabra secreta " }
