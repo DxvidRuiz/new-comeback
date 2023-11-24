@@ -2,11 +2,16 @@ import { Body, Controller, Delete, Get, Param, Patch, Post, Request, UseGuards }
 import { JwtAuthGuard } from 'auth/passport/jwt-auth.guard';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { UserQueryService } from './users-query-service';
 import { UsersService } from './users.service';
 
 @Controller('users')
 export class UsersController {
-  constructor(private readonly usersService: UsersService) { }
+  constructor(
+    private readonly usersService: UsersService,
+    private readonly UserQueryService: UserQueryService
+
+  ) { }
 
   @Post()
   async create(@Body() createUserDto: CreateUserDto) {
@@ -15,12 +20,12 @@ export class UsersController {
 
   @Get()
   findAll() {
-    return this.usersService.findAll();
+    return this.UserQueryService.findAll();
   }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.usersService.findOne(id);
+    return this.UserQueryService.findOne(id);
   }
 
   @Patch()

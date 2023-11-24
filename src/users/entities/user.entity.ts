@@ -4,12 +4,15 @@ import {
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
+  JoinColumn,
   OneToMany,
+  OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn
 } from 'typeorm';
 import { RolesEnum } from '../../common/roles.enum';
 import { Post } from '../../posts/entities/post.entity';
+import { Profile } from '../../profile/entities/profile.entity';
 
 @Entity('users')
 export class User {
@@ -42,9 +45,12 @@ export class User {
   password: string;
 
   @OneToMany(type => Post, post => post.user)
-
   posts: Post[];
 
+
+  @OneToOne(type => Profile, profile => profile.user, { cascade: true })
+  @JoinColumn()
+  profile: Profile;
 
   @CreateDateColumn()
   createdAt: Date;

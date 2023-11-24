@@ -1,6 +1,7 @@
 import { config } from 'dotenv';
 import { DataSource } from 'typeorm';
 import { Post } from './src/posts/entities/post.entity';
+import { Profile } from './src/profile/entities/profile.entity';
 import { User } from './src/users/entities/user.entity';
 const env = process.env.NODE_ENV || 'development';
 config({ path: `./.env.${env}` });
@@ -13,7 +14,7 @@ export default new DataSource({
   password: `${process.env.DB_PASSWORD}`,
   database: `${process.env.DB_DATABASE}`,
   synchronize: true,
-  entities: [User, Post],
+  entities: [User, Post, Profile],
   migrationsRun: true,
   migrations: [
     './src/db/typeorm-migrations/*.ts',

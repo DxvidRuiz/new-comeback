@@ -1,17 +1,19 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
-import { UsersService } from 'users/users.service';
+import { BadRequestException, Inject, Injectable, forwardRef } from '@nestjs/common';
+import { UserQueryService } from 'users/users-query-service';
 import { CheckEmailDto } from './dto/check-email.dto';
 import { CheckUsernameDto } from './dto/check-username.dto';
 
 @Injectable()
 export class ValidationsServiceService {
     constructor(
-        private readonly userService: UsersService,
+        @Inject(forwardRef(() => UserQueryService))
+
+        private readonly userQueryService: UserQueryService,
 
     ) { }
 
     async checkemail(emailToCheck: CheckEmailDto) {
-        const emailExists = await this.userService.findOnebyEmail(emailToCheck.email);
+        const emailExists = await this.userQueryService.findOnebyEmail(emailToCheck.email);
 
         if (emailExists) {
             // Correo electrónico encontrado, lanzar 200 OK
@@ -31,7 +33,7 @@ export class ValidationsServiceService {
     }
 
     async checkusername(usernameToCheck: CheckUsernameDto) {
-        const usernameExists = await this.userService.findOnebyUsername(usernameToCheck.username)
+        const usernameExists = await this.userQueryService.findOnebyUsername(usernameToCheck.username)
 
         if (usernameExists) {
             // Correo electrónico no encontrado, devolver 200 OK
