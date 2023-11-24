@@ -1,4 +1,4 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { BadRequestException, Inject, Injectable, forwardRef } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcryptjs';
 import { CreateUserDto } from 'users/dto/create-user.dto';
@@ -8,10 +8,9 @@ import { LoginUserDto } from './dto/login-user.dto';
 @Injectable()
 export class AuthService {
   constructor(
+    @Inject(forwardRef(() => UsersService))
     private readonly userService: UsersService,
     private readonly jwtService: JwtService
-
-
 
   ) { }
   // ---------------------------------------------------------------------------
@@ -36,7 +35,7 @@ export class AuthService {
       });
 
     }
-    const payload = { sub: logUser.email, role: logUser.role };
+    const payload = { sub: logUser.email, role: logUser.role, id: logUser.id };
     const token = await this.jwtService.signAsync(payload)
 
     return {

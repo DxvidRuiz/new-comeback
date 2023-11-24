@@ -3,6 +3,8 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { JwtAuthGuard } from 'auth/passport/jwt-auth.guard';
+import { Profile } from 'profile/entities/profile.entity';
 import { User } from 'users/entities/user.entity';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -12,8 +14,8 @@ import { FacebookStrategy } from './auth/passport/FacebookStrategy';
 import { JwtStrategy } from './auth/passport/jwt.strategy';
 import { Post } from './posts/entities/post.entity';
 import { PostsModule } from './posts/posts.module';
+import { ProfileModule } from './profile/profile.module';
 import { UploadsModule } from './uploads/uploads.module';
-import { UserProfileModule } from './user-profile/user-profile.module';
 import { UsersController } from './users/users.controller';
 import { UsersModule } from './users/users.module';
 @Module({
@@ -47,7 +49,7 @@ import { UsersModule } from './users/users.module';
           migrationsDir: 'src/migrations',
         },
         charset: 'utf8mb4',
-        entities: [User, Post],
+        entities: [User, Post, Profile],
       }),
       inject: [ConfigService],
     }),
@@ -55,11 +57,11 @@ import { UsersModule } from './users/users.module';
     UsersModule,
     UploadsModule,
     PostsModule,
-    UserProfileModule,
+    ProfileModule,
   ],
 
   controllers: [AppController, UsersController],
-  providers: [AppService, JwtStrategy, FacebookStrategy
+  providers: [AppService, JwtStrategy, FacebookStrategy, JwtAuthGuard
     //    {
     //   provide: APP_GUARD,
     //   useClass: AuthGuard,
