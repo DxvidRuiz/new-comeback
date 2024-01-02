@@ -63,7 +63,7 @@ export class UsersService {
       await this.profileService.createEmptyProfile(userCreated.id);
 
       // Create a JWT token for authentication
-      const payload = { sub: userCreated.email, role: userCreated.role };
+      const payload = { id: userCreated.id, role: userCreated.role };
       const token = await this.jwtService.signAsync(payload);
 
       // Return the token and the newly created user
@@ -101,6 +101,11 @@ export class UsersService {
     return await this.userRepository.save(user);
   }
 
+
+
+
+
+
   async remove(id: string): Promise<User> {
     const user = await this.UserQueryService.findOne(id);
     if (!user) {
@@ -119,7 +124,7 @@ export class UsersService {
 
       return this.userRepository.findOne({
         where: { email },
-        select: ["id", "name", "password", "email"]
+        select: ["id", "name", 'lastname', "password", "email", 'createdAt', 'dateOfBirth', 'gender', 'updatedAt', 'username', 'role']
       });
     } catch (error) {
       throw new Error(`Error : ${error}`)
