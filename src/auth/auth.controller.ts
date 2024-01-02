@@ -7,7 +7,7 @@ import {
   Post,
   Req,
   Request,
-  UseGuards
+  UseGuards,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 
@@ -23,9 +23,10 @@ import { LoginUserDto } from './dto/login-user.dto';
 import { JwtAuthGuard } from './passport/jwt-auth.guard';
 @Controller('auth')
 export class AuthController {
-  constructor(private readonly authService: AuthService,
-    private readonly ValidationService: ValidationsServiceService) { }
-
+  constructor(
+    private readonly authService: AuthService,
+    private readonly ValidationService: ValidationsServiceService,
+  ) {}
 
   @Post('login')
   async login(@Body() data: LoginUserDto) {
@@ -36,11 +37,13 @@ export class AuthController {
       if (error instanceof HttpException) {
         throw error;
       } else {
-        console.log(error)
-        throw new HttpException('Internal server error', HttpStatus.INTERNAL_SERVER_ERROR);
+        console.log(error);
+        throw new HttpException(
+          'Internal server error',
+          HttpStatus.INTERNAL_SERVER_ERROR,
+        );
       }
     }
-
   }
 
   @Post('register')
@@ -66,15 +69,13 @@ export class AuthController {
     return await this.ValidationService.checkusername(usernameToCheck);
   }
 
-
-
-
   @Get('profile')
-
   @Roles(RolesEnum.User)
-  @UseGuards(JwtAuthGuard,
+  @UseGuards(
+    JwtAuthGuard,
     // RoleGuard
-  ) async profilelog(@Req() request: requestWithUser) {
-    return request.user
+  )
+  async profilelog(@Req() request: requestWithUser) {
+    return request.user;
   }
 }
