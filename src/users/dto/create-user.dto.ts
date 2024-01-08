@@ -12,12 +12,13 @@ import {
 import { IsIn, IsStrongPassword } from 'class-validator';
 
 export class CreateUserDto {
-  @IsUUID("4")
+  @IsUUID('4')
   id: string;
 
   @Length(1, 30, { message: 'Username must be between 1 and 30 characters' })
   @Matches(/^^[a-zA-Z0-9._-]+$/, {
-    message: 'Username can only contain letters, numbers, periods (.), underscores (_) and hyphens (-).',
+    message:
+      'Username can only contain letters, numbers, periods (.), underscores (_) and hyphens (-).',
   })
   username: string;
 
@@ -46,8 +47,7 @@ export class CreateUserDto {
   @IsString({ message: 'Password must be a string.' })
   @MinLength(8, { message: 'Password must be at least 8 characters long.' })
   @Length(1, 128)
-  @IsStrongPassword()  // Ejemplo de limitación de longitud
+  @IsStrongPassword() // Ejemplo de limitación de longitud
   @IsNotEmpty({ message: 'Password cannot be empty.' })
   password: string;
-
 }

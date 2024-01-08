@@ -13,6 +13,8 @@ import { UsersService } from './users.service';
     TypeOrmModule.forFeature([User]),
     forwardRef(() => ProfileModule),
     forwardRef(() => AuthModule),
+
+
   ],
   controllers: [UsersController],
   providers: [UsersService, UserQueryService],

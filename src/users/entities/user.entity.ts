@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { Exclude } from 'class-transformer';
 import {
   Column,
@@ -8,7 +9,7 @@ import {
   OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
-  UpdateDateColumn
+  UpdateDateColumn,
 } from 'typeorm';
 import { RolesEnum } from '../../common/roles.enum';
 import { Post } from '../../posts/entities/post.entity';
@@ -22,7 +23,7 @@ export class User {
   @Column({ unique: true })
   username: string;
 
-  @Column({ default: "" })
+  @Column({ default: '' })
   name: string;
 
   @Column({})
@@ -34,21 +35,22 @@ export class User {
   @Column({})
   dateOfBirth: string;
 
-  @Column({ unique: true, })
+  @Column({ unique: true })
   email: string;
 
-  @Column({ default: RolesEnum.User, type: "enum", enum: RolesEnum })
+  @Column({ default: RolesEnum.User, type: 'enum', enum: RolesEnum })
   role: RolesEnum;
 
   @Exclude()
   @Column({ nullable: false, select: false })
   password: string;
 
-  @OneToMany(type => Post, post => post.user)
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  @OneToMany((type) => Post, (post) => post.user)
   posts: Post[];
 
-
-  @OneToOne(type => Profile, profile => profile.user, { cascade: true })
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  @OneToOne(() => Profile, (profile) => profile.user)
   @JoinColumn()
   profile: Profile;
 

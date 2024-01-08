@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Injectable } from '@nestjs/common';
 import { CreateUploadDto } from './dto/create-upload.dto';
 import { UpdateUploadDto } from './dto/update-upload.dto';
@@ -6,24 +7,22 @@ import { ImageSavingService } from './services/imageSaving.service';
 
 @Injectable()
 export class UploadsService {
-
   constructor(
     private readonly resizeIMG: ImageResizeService,
-    private readonly saveIMG: ImageSavingService
+    private readonly saveIMG: ImageSavingService,
+  ) {}
+  async uploadProfilePhoto(
+    file: Express.Multer.File,
+    createUploadDto: CreateUploadDto,
   ) {
-
-  }
-  async uploadProfilePhoto(file: Express.Multer.File, createUploadDto: CreateUploadDto) {
-
     const imageResized = await this.resizeIMG.resizeAndCompress(file.buffer, {
-      width: 200, height: 200
-    })
-    const userId = "123"
-    const imgSaved = await this.saveIMG.saveProfilePhoto(imageResized, userId)
+      width: 200,
+      height: 200,
+    });
+    const userId = '123';
+    const imgSaved = await this.saveIMG.saveProfilePhoto(imageResized, userId);
 
-
-    return imgSaved
-      ;
+    return imgSaved;
   }
 
   findAll() {
