@@ -110,6 +110,11 @@ export class UsersService {
     return await this.userRepository.save(user);
   }
 
+
+
+
+
+
   async remove(id: string): Promise<User> {
     const user = await this.UserQueryService.findOne(id);
     if (!user) {
@@ -123,19 +128,7 @@ export class UsersService {
     try {
       return this.userRepository.findOne({
         where: { email },
-        select: [
-          'id',
-          'name',
-          'lastname',
-          'password',
-          'email',
-          'createdAt',
-          'dateOfBirth',
-          'gender',
-          'updatedAt',
-          'username',
-          'role',
-        ],
+        select: ["id", "name", 'lastname', "password", "email", 'createdAt', 'dateOfBirth', 'gender', 'updatedAt', 'username', 'role']
       });
     } catch (error) {
       throw new Error(`Error : ${error}`);
