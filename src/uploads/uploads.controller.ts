@@ -1,4 +1,16 @@
-import { Body, Controller, Delete, Get, MaxFileSizeValidator, Param, ParseFilePipe, Patch, Post, UploadedFile, UseInterceptors } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  MaxFileSizeValidator,
+  Param,
+  ParseFilePipe,
+  Patch,
+  Post,
+  UploadedFile,
+  UseInterceptors,
+} from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { CreateUploadDto } from './dto/create-upload.dto';
 import { UpdateUploadDto } from './dto/update-upload.dto';
@@ -7,11 +19,9 @@ import { UploadsService } from './uploads.service';
 
 @Controller('uploads')
 export class UploadsController {
-  constructor(private readonly uploadsService: UploadsService) {
-
-  }
-  // profile photo upload 
-  @Post("profile-photo")
+  constructor(private readonly uploadsService: UploadsService) {}
+  // profile photo upload
+  @Post('profile-photo')
   @UseInterceptors(FileInterceptor('file'))
   async uploadProfilePhoto(
     @UploadedFile(
@@ -21,18 +31,20 @@ export class UploadsController {
           new ImageFileValidator(),
         ],
       }),
-    ) file: Express.Multer.File,
+    )
+    file: Express.Multer.File,
     @Body() body: CreateUploadDto,
   ) {
-    const photoUpdated = await this.uploadsService.uploadProfilePhoto(file, body)
+    const photoUpdated = await this.uploadsService.uploadProfilePhoto(
+      file,
+      body,
+    );
 
     console.log(photoUpdated);
 
-
     // this.uploadsService.uploadProfilePhoto(file, body); // Asegúrate de pasar el objeto body si es necesario
-    return  // Puedes ajustar el mensaje de retorno según tus necesidades.
+    return; // Puedes ajustar el mensaje de retorno según tus necesidades.
   }
-
 
   @Get()
   findAll() {

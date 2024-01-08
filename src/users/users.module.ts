@@ -12,7 +12,7 @@ import { UsersService } from './users.service';
   imports: [
     TypeOrmModule.forFeature([User]),
     forwardRef(() => ProfileModule),
-    forwardRef(() => AuthModule),
+    // forwardRef(() => AuthModule),
   ],
   controllers: [UsersController],
   providers: [UsersService, UserQueryService],

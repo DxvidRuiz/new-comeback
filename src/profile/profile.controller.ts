@@ -1,4 +1,18 @@
-import { Body, Controller, Delete, Get, MaxFileSizeValidator, Param, ParseFilePipe, Patch, Post, Request, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  MaxFileSizeValidator,
+  Param,
+  ParseFilePipe,
+  Patch,
+  Post,
+  Request,
+  UploadedFile,
+  UseGuards,
+  UseInterceptors,
+} from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { JwtAuthGuard } from 'auth/passport/jwt-auth.guard';
 import { User } from 'users/entities/user.entity';
@@ -12,7 +26,7 @@ import { ProfileService } from './profile.service';
 export class ProfileController {
   constructor(private readonly profileService: ProfileService) { }
 
-
+  
 
   @Post("profile-photo")
   @UseInterceptors(FileInterceptor('file'))
@@ -24,31 +38,20 @@ export class ProfileController {
           new ImageFileValidator(),
         ],
       }),
-    ) file: Express.Multer.File,
+    )
+    file: Express.Multer.File,
     @Body() body: CreateProfileDto,
     @Request() req: any,
   ) {
-
     const user: User = req.user; // Aquí obtienes el usuario autenticado
-
-    const result = await this.profileService.uploadProfilePhoto(file, body, user)
-
-    console.log(result);
-
-
-    // this.uploadsService.uploadProfilePhoto(file, body); // Asegúrate de pasar el objeto body si es necesario
-    return result // Puedes ajustar el mensaje de retorno según tus necesidades.
+    console.log();
+    const result = await this.profileService.uploadProfilePhoto(
+      file,
+      // body,
+      user,
+    );
+    return result; // Puedes ajustar el mensaje de retorno según tus necesidades.
   }
-
-
-
-
-
-
-
-
-
-
 
   // @Post()
   // create(@Body() createProfileDto: CreateProfileDto) {
@@ -60,9 +63,11 @@ export class ProfileController {
     return this.profileService.findAll();
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.profileService.findOne(+id);
+  @Get()
+  @UseGuards(JwtAuthGuard)
+  async findOne(@Request() req: any) {
+    const id = req.user.id;
+    return await this.profileService.findOne(id);
   }
 
   @Patch(':id')
