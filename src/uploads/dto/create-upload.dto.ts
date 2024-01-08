@@ -1,2 +1,1 @@
-export class CreateUploadDto { }
-
+export class CreateUploadDto {}

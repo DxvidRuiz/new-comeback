@@ -8,4 +8,4 @@ import { UploadsService } from './uploads.service';
   controllers: [UploadsController],
   providers: [UploadsService, ImageResizeService, ImageSavingService],
 })
-export class UploadsModule { }
+export class UploadsModule {}

@@ -1,0 +1,30 @@
+{
+    "project_info": {
+      "project_number": "848484145127",
+      "project_id": "iimmabe-test",
+      "storage_bucket": "iimmabe-test.appspot.com"
+    },
+    "client": [
+      {
+        "client_info": {
+          "mobilesdk_app_id": "1:848484145127:android:4ba5d04090ab4af2570f42",
+          "android_client_info": {
+            "package_name": "iimmabe.test"
+          }
+        },
+        "oauth_client": [],
+        "api_key": [
+          {
+            "current_key": "AIzaSyBNCvJVbdFMrHJTavPHMKD_lDKo5MQggek"
+          }
+        ],
+        "services": {
+          "appinvite_service": {
+            "other_platform_oauth_client": []
+          }
+        }
+      }
+    ],
+    "configuration_version": "1"
+  }
+  

@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
@@ -18,6 +19,7 @@ import { ProfileModule } from './profile/profile.module';
 import { UploadsModule } from './uploads/uploads.module';
 import { UsersController } from './users/users.controller';
 import { UsersModule } from './users/users.module';
+// import { FirebaseModule } from 'firebase/firebase.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -67,6 +69,6 @@ import { UsersModule } from './users/users.module';
     //   useClass: AuthGuard,
     // },
 
-  ],
+      ],
 })
 export class AppModule { }

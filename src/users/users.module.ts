@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { Module, forwardRef } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from '../auth/auth.module';
@@ -11,7 +12,7 @@ import { UsersService } from './users.service';
   imports: [
     TypeOrmModule.forFeature([User]),
     forwardRef(() => ProfileModule),
-    forwardRef(() => AuthModule)
+    // forwardRef(() => AuthModule),
   ],
   controllers: [UsersController],
   providers: [UsersService, UserQueryService],

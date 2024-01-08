@@ -1,4 +1,12 @@
-import { BadRequestException, Inject, Injectable, NotFoundException, forwardRef } from '@nestjs/common';
+/* eslint-disable prettier/prettier */
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import {
+  BadRequestException,
+  Inject,
+  Injectable,
+  NotFoundException,
+  forwardRef,
+} from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
 import * as bcrypt from 'bcryptjs';
@@ -8,7 +16,6 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
 import { UserQueryService } from './users-query-service';
-
 
 export interface CreateUserResponse {
   token: string;
@@ -25,11 +32,13 @@ export class UsersService {
     private readonly UserQueryService: UserQueryService,
     @Inject(forwardRef(() => ProfileService))
     private readonly profileService: ProfileService,
-  ) { }
+  ) {}
   async create(createUserData: CreateUserDto): Promise<CreateUserResponse> {
     try {
       // Check if the email already exists
-      const exist = await this.UserQueryService.findOnebyEmail(createUserData.email);
+      const exist = await this.UserQueryService.findOnebyEmail(
+        createUserData.email,
+      );
       if (exist) {
         throw new BadRequestException({
           statusCode: 400,
@@ -40,7 +49,9 @@ export class UsersService {
       }
 
       // Check if the username already exists
-      const idExist = await this.UserQueryService.findOnebyUsername(createUserData.username);
+      const idExist = await this.UserQueryService.findOnebyUsername(
+        createUserData.username,
+      );
       if (idExist) {
         throw new BadRequestException({
           statusCode: 400,
@@ -54,24 +65,26 @@ export class UsersService {
       const passwordhashed = await bcrypt.hash(createUserData.password, 10);
 
       // Create a user object with the hashed password
-      const data = this.userRepository.create({ ...createUserData, password: passwordhashed });
+      const data = this.userRepository.create({
+        ...createUserData,
+        password: passwordhashed,
+      });
 
       // Save the user to the database
       const userCreated = await this.userRepository.save(data);
 
       // Create an empty profile associated with the newly created user
-      await this.profileService.createEmptyProfile(userCreated.id);
+      const userWithProfile =   await this.profileService.createEmptyProfile(userCreated.id);
 
       // Create a JWT token for authentication
-      const payload = { sub: userCreated.email, role: userCreated.role };
+      const payload = { id: userCreated.id, role: userCreated.role };
       const token = await this.jwtService.signAsync(payload);
 
       // Return the token and the newly created user
       return {
         token,
-        user: userCreated,
+        user: userWithProfile,
       };
-
     } catch (error) {
       // Handle errors and return an error message
       throw new BadRequestException({
@@ -82,10 +95,6 @@ export class UsersService {
       });
     }
   }
-
-
-
-
 
   async update(id: string, updateUserDto: UpdateUserDto): Promise<User> {
     const user = await this.UserQueryService.findOne(id);
@@ -110,24 +119,28 @@ export class UsersService {
     return await this.userRepository.remove(user);
   }
 
-
-
-
   async findbyEmailWithPassword(email: string) {
-
     try {
-
       return this.userRepository.findOne({
         where: { email },
-        select: ["id", "name", "password", "email"]
+        select: [
+          'id',
+          'name',
+          'lastname',
+          'password',
+          'email',
+          'createdAt',
+          'dateOfBirth',
+          'gender',
+          'updatedAt',
+          'username',
+          'role',
+        ],
       });
     } catch (error) {
-      throw new Error(`Error : ${error}`)
-
+      throw new Error(`Error : ${error}`);
     }
   }
-
-
 
   async softDeleteUser(id: string) {
     const user = await this.userRepository.findOneBy({ id });

@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { BadRequestException, Inject, Injectable, forwardRef } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcryptjs';
@@ -35,7 +36,7 @@ export class AuthService {
       });
 
     }
-    const payload = { sub: logUser.email, role: logUser.role, id: logUser.id };
+    const payload = { id: logUser.id, role: logUser.role };
     const token = await this.jwtService.signAsync(payload)
 
     return {
