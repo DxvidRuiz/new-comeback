@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { ValidationError } from '@nestjs/class-validator';
 import { ClassSerializerInterceptor, HttpStatus } from '@nestjs/common';
 import { ValidationPipe } from '@nestjs/common/pipes';

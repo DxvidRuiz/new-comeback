@@ -38,6 +38,8 @@
     "class-validator": "^0.14.0",
     "cross-env": "^7.0.3",
     "file-type": "^16.5.4",
+    "firebase": "^10.7.1",
+    "firebase-admin": "^12.0.0",
     "morgan": "^1.10.0",
     "mysql2": "^3.6.2",
     "passport": "^0.6.0",
